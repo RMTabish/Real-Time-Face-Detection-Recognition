@@ -33,3 +33,22 @@ def encode_face(images):
 
 knownEncodes=encode_face(images)
 print("Encoding done")
+
+scal=0.35
+
+#read the camera video, detect the face and create embeddings of it 
+
+cap = cv2.VideoCapture(0)
+
+while True:
+    success, frame =cap.read()
+
+    #resize the frane dor better processing 
+    new_image=cv2.resize(frame,(0,0),None, scal, scal)
+    new_image=cv2.cvtColor(new_image,cv2.Color_BGR2RGB)
+
+    #detetct the faces in the video and encode
+    #make the model name cnn if you have gpu
+    faceLocations = face_recognition.face_locations(new_image, model='hog')
+    face_encode = face_recognition.face_encodings(new_image, faceLocations)
+    
